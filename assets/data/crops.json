@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "小麦",
+    "growTime": 60,
+    "sellPrice": 8,
+    "seedPrice": 3,
+    "unlockLevel": 1,
+    "icon": "wheat"
+  },
+  {
+    "id": 2,
+    "name": "胡萝卜",
+    "growTime": 120,
+    "sellPrice": 15,
+    "seedPrice": 6,
+    "unlockLevel": 1,
+    "icon": "carrot"
+  },
+  {
+    "id": 3,
+    "name": "白菜",
+    "growTime": 180,
+    "sellPrice": 20,
+    "seedPrice": 8,
+    "unlockLevel": 2,
+    "icon": "cabbage"
+  },
+  {
+    "id": 4,
+    "name": "番茄",
+    "growTime": 300,
+    "sellPrice": 35,
+    "seedPrice": 15,
+    "unlockLevel": 3,
+    "icon": "tomato"
+  },
+  {
+    "id": 5,
+    "name": "玉米",
+    "growTime": 600,
+    "sellPrice": 60,
+    "seedPrice": 25,
+    "unlockLevel": 4,
+    "icon": "corn"
+  },
+  {
+    "id": 6,
+    "name": "南瓜",
+    "growTime": 900,
+    "sellPrice": 100,
+    "seedPrice": 40,
+    "unlockLevel": 5,
+    "icon": "pumpkin"
+  }
+]

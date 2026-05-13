@@ -1,0 +1,111 @@
+{
+  "title": "爷爷的农场",
+  "packageName": "com.grandpas.farm",
+  "startScene": "0cfa8eab-c40d-4b47-96df-19d60d1d1600",
+  "excludeScenes": [],
+  "orientation": {
+    "landscapeLeft": false,
+    "landscapeRight": false,
+    "portrait": true,
+    "upsideDown": false
+  },
+  "webOrientation": "portrait",
+  "inlineSpriteFrames": true,
+  "inlineSpriteFrames_native": true,
+  "mainCompressionType": "default",
+  "mainIsRemote": false,
+  "optimizeHotUpdate": false,
+  "bundleQuickCompression": {
+    "WECHAT": "default",
+    "ALIPAY": "default"
+  },
+  "android": {
+    "REMOTE_SERVER_ROOT": "",
+    "packageName": "com.grandpas.farm"
+  },
+  "ios": {
+    "REMOTE_SERVER_ROOT": "",
+    "packageName": "com.grandpas.farm",
+    "ios_enable_jit": true
+  },
+  "mac": {
+    "REMOTE_SERVER_ROOT": "",
+    "height": 720,
+    "packageName": "com.grandpas.farm",
+    "width": 1280
+  },
+  "win32": {
+    "REMOTE_SERVER_ROOT": "",
+    "height": 720,
+    "packageName": "com.grandpas.farm",
+    "width": 1280
+  },
+  "android-instant": {
+    "REMOTE_SERVER_ROOT": "",
+    "packageName": "com.grandpas.farm",
+    "pathPattern": "",
+    "scheme": "https",
+    "host": "",
+    "skipRecord": false,
+    "recordPath": ""
+  },
+  "appBundle": false,
+  "wechatgame": {
+    "REMOTE_SERVER_ROOT": "",
+    "appid": "wx YOUR_APPID_HERE",
+    "orientation": "portrait",
+    "subContext": "",
+    "separate_engine": false
+  },
+  "alipay": {
+    "REMOTE_SERVER_ROOT": ""
+  },
+  "baidu": {
+    "REMOTE_SERVER_ROOT": "",
+    "appid": "",
+    "orientation": "portrait",
+    "subContext": ""
+  },
+  "bytedance": {
+    "REMOTE_SERVER_ROOT": ""
+  },
+  "xiaomi": {
+    "REMOTE_SERVER_ROOT": "",
+    "packageName": "",
+    "orientation": ""
+  },
+  "huawei": {
+    "REMOTE_SERVER_ROOT": "",
+    "packageName": "",
+    "orientation": ""
+  },
+  "oppo": {
+    "REMOTE_SERVER_ROOT": "",
+    "packageName": ""
+  },
+  "vivo": {
+    "REMOTE_SERVER_ROOT": "",
+    "packageName": ""
+  },
+  "qutoutiao": {
+    "REMOTE_SERVER_ROOT": "",
+    "packageName": ""
+  },
+  "cocosplay": {
+    "REMOTE_SERVER_ROOT": ""
+  },
+  "fb-instant-games": {},
+  "previewHeight": 720,
+  "previewWidth": 1280,
+  "md5Cache": true,
+  "nativeMd5Cache": true,
+  "encryptJs": true,
+  "xxteaKey": "4267f2a8-9ac9-46",
+  "zipCompressJs": true,
+  "harmonyos-next": {
+    "packageName": "org.cocos2d.demo",
+    "REMOTE_SERVER_ROOT": "",
+    "jsEngine": "JSVM"
+  },
+  "agreements": {}
+}
