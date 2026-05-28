@@ -84,6 +84,7 @@ export interface PlotConfig {
     unlockLevel: number;
     unlockCost: number;
     position: { x: number; y: number };
+    size?: string; // "long" | "small"
 }
 
 /** 默认玩家数据 */

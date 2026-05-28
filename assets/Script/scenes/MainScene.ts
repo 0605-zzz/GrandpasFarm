@@ -14,11 +14,8 @@ export default class MainScene extends cc.Component {
     //  游戏层节点
     // ═══════════════════════════════════════════════════════════
 
-    @property(cc.Prefab)
-    plotPrefab: cc.Prefab = null;
-
     @property(cc.Node)
-    plotContainer: cc.Node = null;
+    plotsContainer: cc.Node = null;   // 拖入 PlotsContainer（包含7个地块+RightTopLock）
 
     // ═══════════════════════════════════════════════════════════
     //  UI 层节点
@@ -161,30 +158,24 @@ export default class MainScene extends cc.Component {
 
     /** 养殖场点击 */
     private onFarmClick() {
-        const GameData = require("../GameData").default;
-        const gd = GameData.instance;
-        if (gd && gd.isFarmUnlocked()) {
-            cc.log("打开养殖场");
-            // TODO: 打开养殖场面板
-        } else {
-            const needLevel = 5;
-            cc.log(`养殖场需要 ${needLevel} 级解锁`);
-            // TODO: 显示解锁提示
-        }
+        const gm = GameManager.instance;
+        if (!gm) return;
+
+        // TODO: 后续添加养殖场解锁逻辑
+        // 目前默认解锁
+        cc.log("打开养殖场");
+        // TODO: 打开养殖场面板
     }
 
     /** 鱼塘点击 */
     private onPondClick() {
-        const GameData = require("../GameData").default;
-        const gd = GameData.instance;
-        if (gd && gd.isPondUnlocked()) {
-            cc.log("打开鱼塘");
-            // TODO: 打开鱼塘面板
-        } else {
-            const needLevel = 8;
-            cc.log(`鱼塘需要 ${needLevel} 级解锁`);
-            // TODO: 显示解锁提示
-        }
+        const gm = GameManager.instance;
+        if (!gm) return;
+
+        // TODO: 后续添加鱼塘解锁逻辑
+        // 目前默认解锁
+        cc.log("打开鱼塘");
+        // TODO: 打开鱼塘面板
     }
 
     /** 钻石点击 */
@@ -200,32 +191,37 @@ export default class MainScene extends cc.Component {
     }
 
     // ═══════════════════════════════════════════════════════════
-    //  地块初始化
+    //  地块初始化 —— 适配手动摆放的节点（PlotaContainer 下）
     // ═══════════════════════════════════════════════════════════
 
     private initPlots() {
-        if (!this.plotContainer || !this.plotPrefab) {
-            cc.error("地块容器或预制体未设置");
-            return;
-        }
-
         const gm = GameManager.instance;
         if (!gm) return;
 
-        this.plotContainer.removeAllChildren();
         this.plotComponents = [];
 
-        PLOT_CONFIG.forEach(cfg => {
-            const plotNode = cc.instantiate(this.plotPrefab);
-            plotNode.setPosition(cfg.position.x, cfg.position.y);
-            this.plotContainer.addChild(plotNode);
+        if (!this.plotsContainer) {
+            cc.error("PlotsContainer 未设置，请在编辑器中拖入");
+            return;
+        }
 
-            const plotComp = plotNode.getComponent(CropPlot);
+        // 遍历 PlotsContainer 下的所有子节点
+        this.plotsContainer.children.forEach(child => {
+            // 跳过 RightTopLock（它不是地块）
+            if (child.name === "RightTopLock") return;
+
+            const plotComp = child.getComponent(CropPlot);
             if (plotComp) {
-                plotComp.init(cfg.id);
+                // 如果编辑器里 plotId 没设置（默认-1），用配置初始化
+                const cfg = PLOT_CONFIG.find(c => c.id === plotComp.plotId);
+                if (cfg && plotComp.plotId === -1) {
+                    plotComp.init(cfg.id, cfg.unlockLevel);
+                }
                 this.plotComponents.push(plotComp);
             }
         });
+
+        cc.log(`地块初始化完成，共 ${this.plotComponents.length} 个地块`);
     }
 
     // ═══════════════════════════════════════════════════════════
