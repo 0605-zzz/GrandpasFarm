@@ -13,20 +13,24 @@ export const CROP_CONFIG: { [key: number]: CropConfig } = {
     6: { id: 6, name: "南瓜", growTime: 900, sellPrice: 100, seedPrice: 40, unlockLevel: 5, icon: "pumpkin", stages: 3 },
 };
 
-/** 地块配置表 */
+/** 地块尺寸类型 */
+export enum PlotSize {
+    LONG = "long",   // 长条形（4格宽）
+    SMALL = "small", // 小方形（1格）
+}
+
+/** 地块配置表 (1块长条 + 2块左下 + 2x2右下，共7块) */
 export const PLOT_CONFIG: PlotConfig[] = [
-    { id: 0, unlockLevel: 1, unlockCost: 0, position: { x: -200, y: 100 } },
-    { id: 1, unlockLevel: 1, unlockCost: 0, position: { x: -100, y: 100 } },
-    { id: 2, unlockLevel: 1, unlockCost: 0, position: { x: 0, y: 100 } },
-    { id: 3, unlockLevel: 1, unlockCost: 0, position: { x: 100, y: 100 } },
-    { id: 4, unlockLevel: 2, unlockCost: 200, position: { x: -200, y: 0 } },
-    { id: 5, unlockLevel: 2, unlockCost: 200, position: { x: -100, y: 0 } },
-    { id: 6, unlockLevel: 3, unlockCost: 500, position: { x: 0, y: 0 } },
-    { id: 7, unlockLevel: 3, unlockCost: 500, position: { x: 100, y: 0 } },
-    { id: 8, unlockLevel: 4, unlockCost: 1000, position: { x: -200, y: -100 } },
-    { id: 9, unlockLevel: 4, unlockCost: 1000, position: { x: -100, y: -100 } },
-    { id: 10, unlockLevel: 5, unlockCost: 2000, position: { x: 0, y: -100 } },
-    { id: 11, unlockLevel: 5, unlockCost: 2000, position: { x: 100, y: -100 } },
+    // 长土地（id=0，初始解锁）
+    { id: 0, unlockLevel: 1, unlockCost: 0, position: { x: 0, y: 0 }, size: PlotSize.LONG },
+    // 左下2块（id=1,2，未解锁）
+    { id: 1, unlockLevel: 2, unlockCost: 200, position: { x: 0, y: 0 }, size: PlotSize.SMALL },
+    { id: 2, unlockLevel: 3, unlockCost: 500, position: { x: 0, y: 0 }, size: PlotSize.SMALL },
+    // 右下2x2（id=3,4,5,6，未解锁，按等级解锁）
+    { id: 3, unlockLevel: 4, unlockCost: 1000, position: { x: 0, y: 0 }, size: PlotSize.SMALL },
+    { id: 4, unlockLevel: 5, unlockCost: 2000, position: { x: 0, y: 0 }, size: PlotSize.SMALL },
+    { id: 5, unlockLevel: 6, unlockCost: 3500, position: { x: 0, y: 0 }, size: PlotSize.SMALL },
+    { id: 6, unlockLevel: 7, unlockCost: 5500, position: { x: 0, y: 0 }, size: PlotSize.SMALL },
 ];
 
 /** 升级所需经验 */

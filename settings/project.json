@@ -8,6 +8,7 @@
   "group-list": [
     "default"
   ],
+  "start-scene": "0cfa8eab-c40d-4b47-96df-19d60d1d1600",
   "design-resolution-width": 960,
   "design-resolution-height": 640,
   "fit-width": false,
@@ -32,6 +33,5 @@
     }
   },
   "preview-port": 7456,
-  "clear-simulator-cache": true,
-  "start-scene": "current"
+  "clear-simulator-cache": true
 }

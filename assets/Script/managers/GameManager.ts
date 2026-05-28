@@ -176,13 +176,100 @@ export default class GameManager extends cc.Component {
     public addExp(amount: number) {
         this.playerData.exp += amount;
         const needed = expNeeded(this.playerData.level);
+        
+        let levelUp = false;
         while (this.playerData.exp >= needed) {
             this.playerData.exp -= needed;
             this.playerData.level++;
+            levelUp = true;
             cc.systemEvent.emit("ON_LEVEL_UP", this.playerData.level);
         }
+        
         this.saveLocal();
         cc.systemEvent.emit("ON_EXP_CHANGED", this.playerData.exp);
+        
+        // 升级后检查解锁
+        if (levelUp) {
+            this.checkUnlocks();
+        }
+    }
+
+    // ─── 解锁检查 ─────────────────────────────────────────────
+
+    /** 检查所有可解锁内容（升级后调用） */
+    private checkUnlocks() {
+        // 检查右上大锁
+        this.checkRightTopUnlock();
+        
+        // 检查鱼塘锁
+        this.checkFishPondUnlocks();
+        
+        // 检查小土地解锁
+        this.playerData.plots.forEach(plot => {
+            if (!plot.isUnlocked && this.playerData.level >= plot.unlockLevel) {
+                cc.systemEvent.emit("ON_PLOT_CAN_UNLOCK", plot.id);
+            }
+        });
+    }
+
+    /** 检查右上大锁解锁 */
+    private checkRightTopUnlock() {
+        const rightTopLock = cc.find("Canvas/PlotsContainer/RightTopLock");
+        if (!rightTopLock) return;
+        
+        const lockComp = rightTopLock.getComponent("RightTopLock");
+        if (!lockComp) return;
+        
+        lockComp.checkUnlock(this.playerData.level);
+    }
+
+    /** 手动触发检查右上大锁（比如点击时） */
+    public tryUnlockRightTop(): boolean {
+        return this.checkRightTopUnlockByLevel(this.playerData.level);
+    }
+
+    /** 根据等级检查右上大锁 */
+    private checkRightTopUnlockByLevel(level: number): boolean {
+        const rightTopLock = cc.find("Canvas/PlotsContainer/RightTopLock");
+        if (!rightTopLock) return false;
+        
+        const lockComp = rightTopLock.getComponent("RightTopLock");
+        if (!lockComp) return false;
+        
+        return lockComp.checkUnlock(level);
+    }
+
+    /** 检查鱼塘锁解锁 */
+    private checkFishPondUnlocks() {
+        const fishPondContainer = cc.find("Canvas/FishPondContainer");
+        if (!fishPondContainer) return;
+        
+        fishPondContainer.children.forEach(child => {
+            const lockComp = child.getComponent("FishPondLock");
+            if (lockComp) {
+                lockComp.checkUnlock(this.playerData.level);
+            }
+        });
+    }
+
+    /** 手动触发检查鱼塘锁（比如点击时） */
+    public tryUnlockFishPond(): boolean {
+        return this.checkFishPondUnlocksByLevel(this.playerData.level);
+    }
+
+    /** 根据等级检查所有鱼塘锁 */
+    private checkFishPondUnlocksByLevel(level: number): boolean {
+        const fishPondContainer = cc.find("Canvas/FishPondContainer");
+        if (!fishPondContainer) return false;
+
+        let unlocked = false;
+        fishPondContainer.children.forEach(child => {
+            const lockComp = child.getComponent("FishPondLock");
+            if (lockComp && lockComp.checkUnlock(level)) {
+                unlocked = true;
+            }
+        });
+        return unlocked;
     }
 
     // ─── 地块操作 ─────────────────────────────────────────────
