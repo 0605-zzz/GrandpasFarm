@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "32b5b4a3-4a0a-4d49-9aaf-2aec080ad60b",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 499,
+  "height": 499,
+  "platformSettings": {},
+  "subMetas": {
+    "奖杯_爱给网_aigei_com": {
+      "ver": "1.0.6",
+      "uuid": "679b742a-2774-47bf-a3d4-0af0d29b8579",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "32b5b4a3-4a0a-4d49-9aaf-2aec080ad60b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -10,
+      "trimX": 136,
+      "trimY": 114,
+      "width": 227,
+      "height": 291,
+      "rawWidth": 499,
+      "rawHeight": 499,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

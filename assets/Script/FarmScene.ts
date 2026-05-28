@@ -3,8 +3,8 @@
 
 const { ccclass, property } = cc._decorator;
 import GameData from "./GameData";
-import TopBar from "./TopBar";
-import BottomBar, { TabType } from "./BottomBar";
+import TopBar from "./ui/TopBar";
+import BottomBar, { TabType } from "./ui/BottomBar";
 
 @ccclass
 export default class FarmScene extends cc.Component {

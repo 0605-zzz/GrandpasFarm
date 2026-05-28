@@ -125,4 +125,36 @@ export default class GameData extends cc.Component {
     private expNeeded(level: number): number {
         return level * 100;
     }
+
+    /** 判断养殖场是否已解锁 */
+        /** 判断养殖场是否已解锁 */
+    public isFarmUnlocked(): boolean {
+        return this.playerData.farmUnlocked;
+    }
+
+    /** 判断鱼塘是否已解锁 */
+    public isPondUnlocked(): boolean {
+        return this.playerData.pondUnlocked;
+    }
+
+    /** 解锁养殖场（等级够了就可以调用） */
+    public unlockFarm(): boolean {
+        if (this.playerData.level >= UNLOCK_REQUIREMENTS.FARM) {
+            this.playerData.farmUnlocked = true;
+            this.saveData();
+            return true;
+        }
+        return false;
+    }
+
+    /** 解锁鱼塘 */
+    public unlockPond(): boolean {
+        if (this.playerData.level >= UNLOCK_REQUIREMENTS.POND) {
+            this.playerData.pondUnlocked = true;
+            this.saveData();
+            return true;
+        }
+        return false;
+    }
+
 }

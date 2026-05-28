@@ -1,24 +1,67 @@
-// ToolPanel.ts
-// 工具面板：显示玩家拥有的工具（铲子、水壶等）
-
 const { ccclass, property } = cc._decorator;
-import BasePanel from "./BasePanel";
 
 @ccclass
-export default class ToolPanel extends BasePanel {
+export default class ToolPanel extends cc.Component {
+    
+    @property(cc.Node)
+    toolContainer: cc.Node = null;
 
-    @property(cc.Label)
-    emptyLabel: cc.Label = null;
+    private _showY: number = -590;
+    private _hideY: number = -1500;
+    private _duration: number = 0.3;
+    private _isOpen: boolean = false;
 
-    onEnable() {
-        this.refreshUI();
+    onLoad() {
+        this.node.y = this._hideY;
     }
 
-    public refreshUI() {
-        // 工具系统初始为空
-        if (this.emptyLabel) {
-            this.emptyLabel.node.active = true;
-            this.emptyLabel.string = "暂无工具\n快去商店购买吧！";
+    public show() {
+        this.node.active = true;
+        this._isOpen = true;
+        
+        this.scheduleOnce(() => {
+            const canvas = cc.find('Canvas');
+            if (canvas) {
+                canvas.on(cc.Node.EventType.TOUCH_END, this.onOutsideClick, this);
+            }
+        }, 0.1);
+        
+        cc.tween(this.node)
+            .to(this._duration, { y: this._showY }, { easing: 'cubicOut' })
+            .start();
+    }
+
+    public hide() {
+        if (!this._isOpen) return;
+        this._isOpen = false;
+        
+        const canvas = cc.find('Canvas');
+        if (canvas) {
+            canvas.off(cc.Node.EventType.TOUCH_END, this.onOutsideClick, this);
+        }
+        
+        cc.tween(this.node)
+            .to(this._duration, { y: this._hideY }, { easing: 'cubicIn' })
+            .call(() => {
+                this.node.active = false;
+            })
+            .start();
+    }
+
+    private onOutsideClick(event: cc.Event.EventTouch) {
+        if (!this._isOpen) return;
+        
+        const touchPos = event.getLocation();
+        const localPos = this.node.convertToNodeSpaceAR(cc.v3(touchPos.x, touchPos.y, 0));
+        
+        const halfW = this.node.width / 2;
+        const halfH = this.node.height / 2;
+        
+        const isOutside = localPos.x < -halfW || localPos.x > halfW || 
+                          localPos.y < -halfH || localPos.y > halfH;
+        
+        if (isOutside) {
+            this.hide();
         }
     }
 }

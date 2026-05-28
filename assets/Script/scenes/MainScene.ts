@@ -6,6 +6,7 @@ const { ccclass, property } = cc._decorator;
 import GameManager from "../managers/GameManager";
 import CropPlot from "../components/CropPlot";
 import { PLOT_CONFIG } from "../data/Config";
+import GameData from "../GameData";
 
 @ccclass
 export default class MainScene extends cc.Component {
@@ -161,7 +162,7 @@ export default class MainScene extends cc.Component {
 
     /** 养殖场点击 */
     private onFarmClick() {
-        const GameData = require("../GameData").default;
+        
         const gd = GameData.instance;
         if (gd && gd.isFarmUnlocked()) {
             cc.log("打开养殖场");
@@ -175,7 +176,7 @@ export default class MainScene extends cc.Component {
 
     /** 鱼塘点击 */
     private onPondClick() {
-        const GameData = require("../GameData").default;
+        
         const gd = GameData.instance;
         if (gd && gd.isPondUnlocked()) {
             cc.log("打开鱼塘");

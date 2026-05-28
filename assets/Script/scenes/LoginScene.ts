@@ -1,8 +1,5 @@
-// LoginScene.ts 最终稳定版
+// LoginScene.ts 完美版：自动加载进度条 → 显示按钮 → 点击缩放 → 进入游戏
 const { ccclass, property } = cc._decorator;
-import GameManager from "../managers/GameManager";
-import CloudSaveManager from "../managers/CloudSaveManager";
-import WXUtil from "../utils/WXUtil";
 
 @ccclass
 export default class LoginScene extends cc.Component {
@@ -21,23 +18,20 @@ export default class LoginScene extends cc.Component {
     onLoad() {
         if (this.progressBar) this.progressBar.progress = 0;
         if (this.progressLabel) this.progressLabel.string = "0%";
+        
+        // 一开始隐藏按钮
+        if (this.enterBtnNode) this.enterBtnNode.active = false;
+
         this.startLoading();
     }
 
     private async startLoading() {
-        // 0-50% 平滑加载
         await this.simulateResourceLoading();
-        
-        // 50-70% 平滑加载
         await this.smoothProgress(0.5, 0.7, 800);
-        
-        // 70-100% 平滑加载
         await this.smoothProgress(0.7, 1.0, 1200);
-
         this.onLoadComplete();
     }
 
-    // 0-50% 平滑
     private simulateResourceLoading(): Promise<void> {
         return new Promise(resolve => {
             let progress = 0;
@@ -52,28 +46,30 @@ export default class LoginScene extends cc.Component {
         });
     }
 
-    // 通用：从 start 平滑走到 end
     private smoothProgress(start: number, end: number, durationMs: number): Promise<void> {
         return new Promise(resolve => {
             const total = end - start;
+            if (total <= 0) {
+                this.updateProgress(end);
+                resolve();
+                return;
+            }
             const step = 0.01;
-            const speed = durationMs / (total / step);
+            const stepCount = total / step;
+            const speed = Math.max(durationMs / stepCount, 16);
             let current = start;
 
             const interval = setInterval(() => {
                 current += step;
-                this.updateProgress(current);
                 if (current >= end) {
+                    current = end;
                     clearInterval(interval);
                     resolve();
                 }
+                this.updateProgress(current);
             }, speed);
         });
     }
-
-    private async wxLogin() { } // 已移除逻辑，不影响进度
-
-    private async loadGameData() { } // 已移除逻辑，不影响进度
 
     private updateProgress(progress: number) {
         const clamped = Math.min(Math.max(progress, 0), 1);
@@ -83,14 +79,35 @@ export default class LoginScene extends cc.Component {
 
     private onLoadComplete() {
         this.loadDone = true;
+        if (this.enterBtnNode) {
+            this.enterBtnNode.active = true;
+            this.showEnterBtnAnimation(); // 按钮弹出动画
+        }
     }
 
+    // 按钮出现动画
+    private showEnterBtnAnimation() {
+        this.enterBtnNode.scale = 0;
+        cc.tween(this.enterBtnNode)
+            .to(0.3, { scale: 1.1 }, { easing: "backOut" })
+            .to(0.1, { scale: 1 })
+            .start();
+    }
+
+    // ==============================================
+    // ✨ 这里就是你要的：点击按钮时轻微缩放效果
+    // ==============================================
     public onEnterBtnClick() {
         if (!this.loadDone) return;
-        cc.director.loadScene("MainScene");
-    }
 
-    private enterMainScene() {
-        cc.director.loadScene("MainScene");
+        // 点击时：先缩小 → 再恢复 → 再进入游戏
+        cc.tween(this.enterBtnNode)
+            .to(0.1, { scale: 0.9 })  // 轻微缩小
+            .to(0.1, { scale: 1 })    // 恢复原样
+            .call(() => {
+                // 动画结束后再跳场景
+                cc.director.loadScene("MainScene");
+            })
+            .start();
     }
 }
